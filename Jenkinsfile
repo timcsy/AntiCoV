@@ -1,7 +1,7 @@
 pipeline {
 	agent none
 	stages {
-		stage('Frontend') {
+		stage('Frontend Build') {
 			agent {
 				dockerfile {
 					dir 'frontend'
@@ -10,12 +10,9 @@ pipeline {
 					args '-p 3000:80'
 				}
 			}
-			stages {
-				stage('Frontend Build') {
-					steps {
-						echo 'Start Frontend!'
-					}
-				}
+			steps {
+				echo 'Start Frontend!'
+				curl docker
 			}
 		}
 	}
