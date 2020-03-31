@@ -11,8 +11,7 @@ pipeline {
 				}
 			}
 			steps {
-				echo 'Start Frontend!'
-				curl docker
+				sh './bin/frontened-build.sh'
 			}
 		}
 	}
