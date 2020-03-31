@@ -4,7 +4,7 @@ pipeline {
 		stage('Frontend Build') {
 			agent {
 				dockerfile {
-					dir 'frontend'
+					dir('frontend')
 					filename 'Dockerfile'
 					label 'frontend'
 					args '-p 3000:80'
