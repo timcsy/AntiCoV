@@ -10,7 +10,7 @@ pipeline {
 				}
 			}
 			steps {
-				// sh './bin/frontened-build.sh'
+				sh './bin/frontened-build.sh'
 			}
 		}
 	}
