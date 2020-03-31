@@ -6,7 +6,6 @@ pipeline {
 				dockerfile {
 					filename 'Dockerfile'
 					dir 'frontend'
-					label 'frontend'
 					args '-p 3000:80'
 				}
 			}
