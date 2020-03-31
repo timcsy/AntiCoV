@@ -6,11 +6,11 @@ pipeline {
 				dockerfile {
 					filename 'Dockerfile'
 					dir 'frontend'
-					args '-p 80:3000'
+					args '-p 3000:80'
 				}
 			}
 			steps {
-				sh './bin/frontened-build.sh'
+				// sh './bin/frontened-build.sh'
 			}
 		}
 	}
