@@ -10,7 +10,7 @@ pipeline {
 				}
 			}
 			steps {
-				nginx -g 'daemon off;'
+				sh "nginx -g 'daemon off;'"
 				sh './bin/frontened-build.sh'
 				input message: 'Finished using the web site? (Click "Proceed" to continue)'
 			}
