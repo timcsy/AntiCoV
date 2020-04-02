@@ -6,7 +6,7 @@ pipeline {
 				dockerfile {
 					filename 'Dockerfile'
 					dir 'frontend'
-					args '-p 49600:80'
+					args '-u root -p 49600:80'
 				}
 			}
 			steps {
