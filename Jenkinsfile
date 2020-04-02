@@ -11,9 +11,7 @@ pipeline {
 			}
 			steps {
 				sh './bin/frontened-build.sh'
-				sh 'echo $! > .pidfile'
 				input message: 'Finished using the web site? (Click "Proceed" to continue)'
-				sh 'kill $(cat .pidfile)'
 			}
 		}
 	}
