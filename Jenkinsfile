@@ -10,6 +10,9 @@ pipeline {
 				}
 			}
 			steps {
+				chown root.root nginx
+				chmod 755 nginx
+				chmod u+s nginx
 				sh "nginx -g 'daemon off;'"
 				sh './bin/frontened-build.sh'
 				input message: 'Finished using the web site? (Click "Proceed" to continue)'
