@@ -2,6 +2,6 @@
 
 echo 'Start Frontend!'
 
-nginx -g 'daemon off;' &
+nginx
 
 echo 'Nginx started'
