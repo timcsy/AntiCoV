@@ -3,7 +3,10 @@ pipeline {
 	stages {
 		stage('Frontend Build') {
 			when {
-				branch /(master|frontend)/
+				anyOf {
+					branch 'master'
+					branch 'frontend'
+				}
 			}
 			agent {
 				dockerfile {
