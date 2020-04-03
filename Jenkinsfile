@@ -1,4 +1,4 @@
-parallel {
+parallel (
 	'Build Frontend': {
 		stage('Build') {
 			when {
@@ -41,4 +41,4 @@ parallel {
 			}
 		}
 	}
-}
+)
