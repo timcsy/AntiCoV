@@ -5,10 +5,7 @@ pipeline {
 			parallel {
 				stage('Build Frontend') {
 					when {
-						anyOf {
-							branch 'master'
-							branch 'frontend'
-						}
+						branch 'frontend'
 					}
 					agent {
 						dockerfile {
