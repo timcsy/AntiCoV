@@ -19,7 +19,7 @@ parallel {
 				input message: 'Finished using the web site? (Click "Proceed" to continue)'
 			}
 		}
-	}
+	},
 	'Build Backend': {
 		stage('Build') {
 			when {
