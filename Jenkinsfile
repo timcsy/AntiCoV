@@ -2,6 +2,10 @@ pipeline {
 	agent any
 	stages {
 		stage('Frontend Build') {
+			when {
+				branch 'master'
+				branch 'frontend' 
+			}
 			agent {
 				dockerfile {
 					filename 'Dockerfile'
