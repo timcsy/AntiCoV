@@ -27,8 +27,8 @@
 
 #include <math.h>
 
-#define SUR_TEMP_PIN A0 // Analog input pin connect to temperature sensor SUR pin
-#define OBJ_TEMP_PIN A1 // Analog input pin connect to temperature sensor OBJ pin
+#define SUR_TEMP_PIN NULL //Analog input pin connect to temperature sensor SUR pin
+#define OBJ_TEMP_PIN A0 // Analog input pin connect to temperature sensor OBJ pin
 float temp_calibration=0;       //this parameter was used to calibrate the temperature
 //float objt_calibration=0.000; //this parameter was used to calibrate the object temperature
 float temperature_range=10;    //we make a map of temperature-voltage according to sensor datasheet. 10 is the temperature step when sensor and 
@@ -78,17 +78,17 @@ float obj [13][12]={
 /*12*/            { 5.29,5.076,4.83,4.549,4.231,3.872,3.47,3.023,2.527,1.98,1.379,0.72}
 };
 
-void setup() 
-{
-	Serial.begin(9600); // initialize serial communications at 9600 bps
-	analogReference(INTERNAL);//set the refenrence voltage 1.1V,the distinguishability can up to 1mV.
-	//analogReference(INTERNAL1V1);//(mega only)set the refenrence voltage 1.1V,the distinguishability can up to 1mV.
-}
-void loop()
-{
-	measureSurTemp();//measure the Surrounding temperature around the sensor
-	measureObjectTemp();
-}
+// void setup() 
+// {
+// 	Serial.begin(9600); // initialize serial communications at 9600 bps
+// 	analogReference(INTERNAL);//set the refenrence voltage 1.1V,the distinguishability can up to 1mV.
+// 	//analogReference(INTERNAL1V1);//(mega only)set the refenrence voltage 1.1V,the distinguishability can up to 1mV.
+// }
+// void loop()
+// {
+// 	measureSurTemp();//measure the Surrounding temperature around the sensor
+// 	measureObjectTemp();
+// }
 
 float binSearch(long x)// this function used for measure the surrounding temperature
 {
@@ -178,6 +178,6 @@ float measureObjectTemp()
 		{
 			Serial.print("\t object temperature:");		
 			Serial.println(final_temp,2); 
-			}
+		}
+	return final_temp;
 }
-
