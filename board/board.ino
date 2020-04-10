@@ -7,10 +7,29 @@
 #include <ArduinoJson.h>
 
 Network network("ESP8266 WiFi Configuration");
-String host="https://ab59c792.ngrok.io/test";
+String host="http://089f1ea9.ngrok.io/test";
 StaticJsonDocument<200> doc;
 HTTPClient http;
 static int i;
+
+float getTemp(){
+  float temps;
+  float max = 0;
+  float min = 1000;
+  float temp;
+  for(int i = 0; i < 10; i++){
+    temp = measureObjectTemp();
+    if (temp > max)
+      max = temp;
+    if (temp < min)
+      min = temp;
+    temps += temp;
+  }
+  temps -= max;
+  temps -= min;
+  temps /= 8;
+  return temps;
+}
 
 void PostTemp(float temp){
   doc["temp"] = temp;
@@ -28,15 +47,15 @@ void PostTemp(float temp){
 
 void setup() {
   Serial.begin(115200); // Set up the serial port
-  //network.setup();
+  network.setup();
   //analogReference(3);
   i = 0;
 }
 
 void loop() {
-  //network.loop();
-  measureObjectTemp();
-  //PostTemp( i ); 
+  network.loop();
+  PostTemp( getTemp() ); 
+  
   delay(1500);
   ++i;
 

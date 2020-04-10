@@ -39,15 +39,17 @@ float offset_vol=0.014;        //this parameter was used to set the mid level vo
                                //the unit is V
 float tempValue = 0; 
 float objtValue= 0;  
-float current_temp=0;
+float current_temp=26;
 float temp=0;
 float temp1=0;
 float temp2=0;
 unsigned int temp3=0;
-const float reference_vol=0.500;
+const float reference_vol=0.550;
+const float objtemp_correction = 145;
 unsigned char clear_num=0;//when use lcd to display
 float R=0;
 float voltage=0;
+
 
 
 long res[100]={
@@ -160,8 +162,12 @@ float measureObjectTemp()
 		objtValue+= analogRead(OBJ_TEMP_PIN); 
 		delay(10); 
     }       
-	objtValue=objtValue/10;//Averaging processing     
-	temp1=objtValue*1.1/1023;//+objt_calibration; 
+	objtValue=objtValue/10*3;//Averaging processing 
+  Serial.print("objtValue = ");
+//  objtValue+=87+360;
+  Serial.print(objtValue);    
+	temp1=objtValue*1.1/1023;//+objt_calibration;
+   
 	sur_temp=temp1-(reference_vol+offset_vol);             
 	Serial.print("\t Sensor voltage:");		
 	Serial.print(sur_temp,3);	
@@ -169,15 +175,19 @@ float measureObjectTemp()
 	array_temp=arraysearch(current_temp,sur_temp*1000);        
 	temp2=current_temp;        
 	temp1=(temperature_range*voltage)/(obj[array_temp+1][(int)(temp2/10)+1]-obj[array_temp][(int)(temp2/10)+1]);        
-	final_temp=temp2+temp1;        
-	if((final_temp>100)||(final_temp<=-10))
-		{
-		Serial.println ("\t out of range!");
-		}
-	else
-		{
-			Serial.print("\t object temperature:");		
-			Serial.println(final_temp,2); 
-		}
+	final_temp=temp2+temp1;
+//  final_temp += objtemp_correction;
+  Serial.print("\t object temperature:");    
+  Serial.println(final_temp,2); 
+  
+//	if((final_temp>100)||(final_temp<=-10))
+//		{
+//		Serial.println ("\t out of range!");
+//		}
+//	else
+//		{
+//			Serial.print("\t object temperature:");		
+//			Serial.println(final_temp,2); 
+//		}
 	return final_temp;
 }
