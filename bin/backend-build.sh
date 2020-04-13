@@ -2,6 +2,4 @@
 
 echo 'Start Backend!'
 
-npm install
-
 npm start

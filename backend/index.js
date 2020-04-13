@@ -36,7 +36,7 @@ app.use(static(path.resolve(__dirname, '../client/dist')))
 
 // server
 app.listen(config.PORT, () => {
-	console.log(`Remember to open MongoDB server: npm run db`)
+	console.log(`Remember to open MongoDB server`)
 	console.log(`Remember to setup at first time: npm run setup`)
 	console.log(`Server is running at http://localhost:${config.PORT}`)
 })
