@@ -2,6 +2,6 @@
 
 echo 'Start Backend!'
 
-cd ../backend
+cd backend
 
 npm start
