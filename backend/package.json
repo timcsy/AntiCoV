@@ -1,0 +1,32 @@
+{
+  "name": "liveboard",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "scripts": {
+    "start": "node index.js",
+    "setup": "node setup.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "bcrypt": "^3.0.0",
+    "koa": "^2.5.2",
+    "koa-bodyparser": "^4.2.1",
+    "koa-passport": "^4.1.0",
+    "koa-router": "^7.4.0",
+    "koa-session": "^5.8.2",
+    "koa-views": "^6.1.4",
+    "minimatch": "^3.0.4",
+    "mongoose": "^5.2.6",
+    "passport-facebook": "^2.1.1",
+    "passport-facebook-token": "^3.3.0",
+    "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0"
+  },
+  "devDependencies": {
+    "koa-static": "^5.0.0",
+    "koa-websocket": "^6.0.0"
+  }
+}
