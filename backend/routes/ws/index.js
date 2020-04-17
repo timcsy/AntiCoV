@@ -24,6 +24,7 @@ router.all('/data', RBAC.auth(), async (ctx) => {
 
 function send(msg) {
 	for (const key in sockets) {
+		console.log(msg)
 		sockets[key].send(JSON.stringify(msg))
 	}
 }
