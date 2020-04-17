@@ -1,3 +1,4 @@
+require('dotenv').config()
 const readline = require('readline')
 var Writable = require('stream').Writable;
 const bcrypt = require('bcrypt')
