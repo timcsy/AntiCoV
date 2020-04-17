@@ -1,5 +1,7 @@
 import websocket
 
+import app as alarm_manager
+
 from configparser import ConfigParser
 
 config = ConfigParser()
@@ -21,3 +23,5 @@ if __name__ == "__main__":
     websocket.enableTrace(True)
     ws = websocket.WebSocketApp(config['WebSocket']['URL'], on_message=on_message, on_error=on_error, on_close=on_close)
     ws.run_forever()
+    if ws.on_message[0] == "line":
+        alarm_manager()
