@@ -25,7 +25,7 @@ router.get('/people/:studentId', RBAC.auth(), RBAC.middleware('people:get'), asy
 })
 
 // 人像偵測
-router.post('/pass', RBAC.auth(true), RBAC.middleware('flow:post'), async (ctx) => {
+router.post('/pass', RBAC.auth(true), async (ctx) => {
 	ctx.body = await service.pass(ctx)
 	ctx.status = 201
 })
