@@ -18,4 +18,4 @@ def boardTest():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host="192.168.50.134", port="9002", debug=True)
