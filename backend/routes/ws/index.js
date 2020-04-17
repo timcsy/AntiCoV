@@ -2,13 +2,13 @@ const Router = require('koa-router')
 const RBAC = require('../../lib/rbac')
 const service = require('../../services/api.js')
 
-const sockets = {} // to store the incoming socket
+const sockets = [] // to store the incoming socket
 
 const router = new Router()
 
-router.all('/data', RBAC.auth(), async (ctx) => {
+router.all('/data', RBAC.auth(true), async (ctx) => {
 	console.log(ctx.state.user)
-	sockets[ctx.state.user] = ctx.websocket
+	sockets.push(ctx.websocket)
 	ctx.websocket.on('open', function() {
 		
 	})

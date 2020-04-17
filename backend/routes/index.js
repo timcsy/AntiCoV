@@ -8,6 +8,11 @@ const apiRouter = require('./api')
 
 const router = new Router()
 
+// views
+app.use(views(path.resolve(__dirname, '../public'), {
+  extension: 'html'
+}))
+
 // Auth resource
 router.use(authRouter.routes())
 
