@@ -6,7 +6,7 @@ const sockets = [] // to store the incoming socket
 
 const router = new Router()
 
-router.all('/data', RBAC.auth(), async (ctx) => {
+router.all('/data', RBAC.auth(ㄍㄧ), async (ctx) => {
 	console.log(ctx.state.user)
 	sockets.push(ctx.websocket)
 	ctx.websocket.on('open', function() {
