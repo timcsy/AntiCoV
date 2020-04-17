@@ -17,7 +17,7 @@ router.all('/data', RBAC.auth(), async (ctx) => {
 		const msg = JSON.parse(message)
 		console.log(ctx.state.user + message)
 		if (msg.cmd === 'temperature') {
-			send(service.setTemperature(temperature))
+			send(service.setTemperature(msg.temperature))
 		}
 	})
 })
