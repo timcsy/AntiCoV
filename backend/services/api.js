@@ -25,7 +25,7 @@ module.exports = {
 			}  //回傳 昨天 前天 大前天的 總人數 發燒數 違規數
 		}
 	},
-	async statistics(ctx, studentId) {
+	async statistics(ctx) {
 		return {
 			avg_temp: 32,
 			total: 44,
@@ -33,7 +33,7 @@ module.exports = {
 			bad: 3
 		}
 	},
-	async search(ctx) {
+	async search(ctx, studentId) {
 		return {
 			name: '王小明',
 			situation: 'OK/not OK/NULL',//今天的溫度量測狀態 通過,發燒,今天沒來
