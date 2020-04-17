@@ -21,7 +21,7 @@ router.get('/statistics', RBAC.auth(true), async (ctx) => {
 
 // 查詢(特定ID狀況)
 router.get('/people/:studentId', RBAC.auth(true), RBAC.middleware('people:get'), async (ctx) => {
-	ctx.body = await service.statistics(ctx, ctx.params.studentId)
+	ctx.body = await service.student(ctx, ctx.params.studentId)
 })
 
 // 人像偵測

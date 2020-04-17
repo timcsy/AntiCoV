@@ -24,6 +24,14 @@ app.use(bodyParser())
 app.use(passport.initialize())
 app.use(passport.session())
 
+// views
+app.use(views(path.resolve(__dirname, './public'), {
+  extension: 'html'
+}))
+
+// static routes
+app.use(static(path.resolve(__dirname, './static')))
+
 // Websocket routes
 app.ws.use(session(app))
 app.ws.use(passport.initialize())
@@ -32,14 +40,6 @@ app.ws.use(wsRouter.routes())
 
 // routes
 app.use(router.routes())
-
-// views
-app.use(views(path.resolve(__dirname, './public'), {
-  extension: 'html'
-}))
-
-// static routes
-app.use(static(path.resolve(__dirname, './static')))
 
 // server
 app.listen(config.PORT, () => {
