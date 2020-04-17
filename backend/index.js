@@ -6,7 +6,6 @@ const websockify = require('koa-websocket')
 const passport = require('./lib/passort')
 const router = require('./routes')
 const wsRouter = require('./routes/ws').router
-const views = require('koa-views')
 const static = require('koa-static')
 const path = require('path')
 const config = require('./config/server')
@@ -23,11 +22,6 @@ app.use(bodyParser())
 // auth
 app.use(passport.initialize())
 app.use(passport.session())
-
-// views
-app.use(views(path.resolve(__dirname, './public'), {
-  extension: 'html'
-}))
 
 // static routes
 app.use(static(path.resolve(__dirname, './static')))
