@@ -1,0 +1,199 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>體溫門禁系統</title>
+    <style type="text/css">
+        @media(min-width: 100px) {
+            .hide {
+                visibility: hidden;
+            }
+
+            .marge {
+                margin-top: -150px;
+                margin-left: 100px;
+            }
+
+            .document {
+                font-size: 10px;
+            }
+        }
+
+        @media(min-width: 700px) {
+            .hide {
+                visibility: visible;
+            }
+
+            .marge {
+                margin-top: 110px;
+                margin-left: 0px;
+            }
+
+            .document {
+                font-size: xx-large;
+            }
+        }
+
+        .header_in {
+            font-size: 50px;
+            width: 675px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .header_out {
+            width: 500px;
+            height: 100px;
+            margin: auto;
+            position: relative;
+        }
+
+        .white {
+            color: #ffffff;
+            font-family: monospace;
+        }
+
+        .orange {
+            color: #000000;
+            background-color: #ffa700;
+            border-radius: 10px;
+            font-family: monospace;
+        }
+
+        .buttun {
+            width: 135px;
+            height: 40px;
+            border: 2px white;
+            font-size: xx-large;
+            color: #ffffff;
+            background-color: #000000;
+            text-align: center;
+            cursor: pointer;
+        }
+    </style>
+    <script>
+        function mouseOver(id) {
+            document.getElementById(id).style.color = '#000000';
+            document.getElementById(id).style.background = '#ffa700';
+        }
+        function mouseOut(id) {
+            document.getElementById(id).style.color = '#ffffff';
+            document.getElementById(id).style.background = '#000000';
+        }
+        function jumpToOther(src) {
+            window.open('https://sites.google.com/gs.ncku.edu.tw/temperature-measurement/' + src, 'temperature');   //跳转
+            window.close();
+        }
+        function callapi() {
+            if (request.status >= 200 && request.status < 400) {
+                var input = request.responseText;
+                alert(input[2])
+            } else {
+                alert('err status');
+            }
+        }
+        const request = new XMLHttpRequest();
+        request.onload = function () {
+            callapi();
+        }
+        request.onerror = function () {
+            alert('invalid');
+        }
+        //request.open('GET', 'https://reqres.in/api/users ', true)
+        //request.send();
+
+        function draw(data) {
+            //test data
+            var set = [30, 31, 32, 33, 34, 35, 36, 37];
+            data = [12, 23, 44, 55, 33, 21, 1];
+            var canvas = document.getElementById('canvas');
+            var ctx = canvas.getContext('2d');
+            var width = canvas.width;
+            var height = canvas.height;
+            var padding = 50;        // 座標軸到canvas邊框的邊距，留邊距寫文字
+            //使用strokeStyle指定線條顏色
+            ctx.strokeStyle = "#ffa700"
+            ctx.beginPath();
+            //使用lineWidth指定線條寬度
+            ctx.lineWidth = 3;
+            // y軸線
+            ctx.moveTo(padding * 0.5, height - padding * 0.5);
+            ctx.lineTo(padding * 0.5, padding * 0.5);
+            ctx.stroke();
+            // x軸線
+            ctx.moveTo(padding * 0.5, height - padding * 0.5);
+            ctx.lineTo(width - padding * 0.5, height - padding * 0.5);
+            ctx.stroke();
+
+            //畫作標點
+            ctx.strokeStyle = "white";
+            ctx.fillStyle = "white";
+            for (var i = 0; i < data.length; i++) {
+                ctx.fillRect(padding * 0.5 + 3 + 60 * i, height - padding * 0.5 - 3, 60, -data[i]);
+            }
+            ctx.fill();
+            //title
+            var title = '當日體溫分布';
+            ctx.textAlign = 'center';
+            ctx.fillStyle = 'white';
+            ctx.font = '30px Microsoft YaHei';
+            ctx.fillText(title, width / 2, padding / 2)
+            //set 座標標示
+            //for x
+            ctx.font = '16px Microsoft YaHei';
+            for (var i = 0; i < set.length; i++) {
+                ctx.fillText(set[i], padding * 0.5 + 3 + 60 * i, height - padding * 0.5 - 3 + 18);
+            }
+            for (var i = 0; i < data.length; i++) {
+                ctx.fillText(data[i], padding * 0.5 + 30 + 60 * i, height - padding * 0.5 - 3 - data[i] - 5);
+            }
+            //發燒線
+            ctx.beginPath();
+            ctx.strokeStyle = "red";
+            ctx.moveTo(padding * 0.5, height - padding * 0.5 - 38);
+            ctx.fillText("發燒線", width - padding * 0.5, height - padding * 0.5 - 45);
+            ctx.lineTo(width - padding * 0.5, height - padding * 0.5 - 38);
+            ctx.stroke();
+        }
+        function critical_information(fever_n, total_n, average_n) {
+            var fever = "fever people:" + fever_n;
+            var total = "total people:" + total_n;
+            var average = "average T℃:&nbsp;" + average_n;
+            document.getElementById("criticalList").innerHTML = "<li>" + fever + "</li>" + "<li>" + total + "</li>" + "<li>" + average + "</li>";
+        }
+    </script>
+</head>
+<body style="background-color : #000000;font-family:'Microsoft YaHei UI'" onload="draw(); critical_information(100, 1000, 38.6);">
+    <div class="hide">
+        <div class="header_out">
+            <div class="header_in" onmousedown="jumpToOther('')">
+                <b class="white">temperature</b> <b class="orange">&nbsp;measurement&nbsp;</b>
+            </div>
+        </div>
+        <div class="header_out">
+            <div class="header_in" style="font-size:0">
+                <input id="diagram" onmouseover="mouseOver(this.id)" onmouseout="mouseOut(this.id)" onmousedown="jumpToOther('/首頁/'+this.id)" class="buttun" type="button" value="Diagram" style="border-bottom:2px #ffa700 solid" />
+                <input id="table" onmouseover="mouseOver(this.id)" onmouseout="mouseOut(this.id)" onmousedown="jumpToOther('/首頁/'+this.id)" class="buttun" type="button" value="Table" />
+                <input id="sign-up" onmouseover="mouseOver(this.id)" onmouseout="mouseOut(this.id)" onmousedown="jumpToOther('/首頁/'+this.id)" class="buttun" type="button" value="Sign Up" />
+                <input id="control" onmouseover="mouseOver(this.id)" onmouseout="mouseOut(this.id)" onmousedown="jumpToOther('/首頁/'+this.id)" class="buttun" type="button" value="Control" />
+                <input id="about" onmouseover="mouseOver(this.id)" onmouseout="mouseOut(this.id)" onmousedown="jumpToOther('/首頁/'+this.id)" class="buttun" type="button" value="About" />
+            </div>
+        </div>
+    </div>
+    <div class="marge">
+        <div class="header_out" style="margin-top:150px; width:750px">
+            <div style="float:left" class="header_in">
+                <canvas id="canvas" width="500" height="400"></canvas>
+            </div>
+            <div style="float:left;color:white; margin-left:500px; font-size:x-large; margin-top:-100px; font-weight:300; font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif">
+                &nbsp;&nbsp;&nbsp;<span class="document">critical number</span>
+                <ul id="criticalList" class="document">
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
