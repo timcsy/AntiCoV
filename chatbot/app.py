@@ -13,7 +13,7 @@ from configparser import ConfigParser
 app = Flask(__name__)
 
 config = ConfigParser()
-conofig.read('app.config', encoding='UTF-8')
+config.read('app.config', encoding='UTF-8')
 
 # Channel Access Token
 line_bot_api = LineBotApi(config['LinePara']['ChannelAccessToken'])
