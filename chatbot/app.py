@@ -8,7 +8,7 @@ from linebot.exceptions import (
 )
 from linebot.models import *
 
-import configparser
+from configparser import ConfigParser
 
 app = Flask(__name__)
 
