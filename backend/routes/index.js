@@ -9,7 +9,7 @@ const apiRouter = require('./api')
 const router = new Router()
 
 // views
-app.use(views(path.resolve(__dirname, '../public'), {
+router.use(views(path.resolve(__dirname, '../public'), {
   extension: 'html'
 }))
 
