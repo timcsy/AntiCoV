@@ -10,6 +10,7 @@ from linebot.models import *
 
 import config
 
+
 app = Flask(__name__)
 
 # Channel Access Token
@@ -33,17 +34,25 @@ def callback():
         abort(400)
     return 'OK'
 
-# 處理訊息
+# 處理傳送到 Server 的訊息
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    '''msg = {
-        "cmd": "temperature",
-        "device": "board",
-        "temperature": "Number"
-    }'''
-    #message = TextSendMessage(text=msg)
     message = TextSendMessage(text=event.message.text)
     line_bot_api.reply_message(event.reply_token, message)
+
+# 對多人傳訊息
+@app.route("/broadcast_function/<string:broadcast_text_str>")
+def broadcast_message(broadcast_text_str):
+    broadcast_message = TextSendMessage(text=broadcast_text_str)
+    line_bot_api.broadcast(broadcast_message)
+    return '----Broadcast Message Sending Successfully !!----'
+
+# 對多人傳送貼圖
+@app.route("/StickerSendMessage/")
+def location_send_message(package_id, sticker_id):
+    sticker_message = StickerSendMessage(p_id = package_id, s_id = sticker_id)
+    line_bot_api.broadcast(sticker_message)
+    return '----Sticker Message Sending Successfully !!----'
 
 import os
 if __name__ == "__main__":
