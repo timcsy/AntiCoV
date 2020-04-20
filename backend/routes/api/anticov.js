@@ -32,13 +32,13 @@ router.post('/pass', RBAC.auth(true), async (ctx) => {
 
 // 逼卡
 router.post('/temperature', RBAC.auth(), async (ctx) => {
-	ctx.body = await service.pass(ctx, ctx.request.body.rfid)
+	ctx.body = await service.card(ctx, ctx.request.body.rfid)
 	ctx.status = 201
 })
 
 // 逼卡註冊
 router.post('/people', RBAC.auth(), async (ctx) => {
-	ctx.body = await service.pass(ctx, ctx.request.body.rfid, ctx.request.body.studentId, ctx.request.body.name)
+	ctx.body = await service.register(ctx, ctx.request.body.rfid, ctx.request.body.studentId, ctx.request.body.name)
 	ctx.status = 201
 })
 
