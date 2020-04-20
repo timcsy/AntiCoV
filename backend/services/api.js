@@ -9,14 +9,19 @@ let lastTime = Date.now()
 
 module.exports = {
 	async getTemperature(ctx) {
+		let records = await Record.find({}).exec()
+		let one = 0, two = 0, three = 0, four = 0, five = 0, six = 0, seven = 0
+		for (let record of records) {
+			if (record.temperatue < 34) one++
+			else if (record.temperatue < 35) two++
+			else if (record.temperatue < 36) three++
+			else if (record.temperatue < 37) four++
+			else if (record.temperatue < 38) five++
+			else if (record.temperatue < 39) six++
+			else seven++
+		}
 		return {
-			one: 1, // < 34
-			two: 2, // 34 - 35
-			three: 3, // 35 - 36
-			four: 4, // 36 - 37
-			five: 5, // 37 - 38
-			six: 6, // 38 - 39
-			seven: 7 // >= 39
+			one, two, three, four, five, six, seven
 		}
 	},
 	async table(ctx) {
