@@ -2,6 +2,7 @@ const People = require('../models/Data/People')
 const Record = require('../models/Data/Record')
 const Flow = require('../models/Data/Flow')
 const send = require('../routes/ws/index').send
+const moment = require('moment')
 
 let peopleId = null // global rfid (who is using)
 let lastTime = Date.now()
@@ -55,7 +56,7 @@ module.exports = {
 		if (people) {
 			people = await People.findById(people._id).exec()
 			let situation = 'NULL'
-			const time = new Date().toISOString().substring(0, 10)
+			const time = moment(new Date).format('YYYY-MM-DD')
 			const record = await Record.find({people: people._id, time: {$gte: time}}).exec()
 			if (record) {
 				if (record.temperature < 37.5) {
@@ -72,6 +73,7 @@ module.exports = {
 			}
 		}
 		ctx.status = 404
+		// for demo
 		return {
 			name: '王小明',
 			situation: 'OK/not OK/NULL',//今天的溫度量測狀態 通過,發燒,今天沒來
