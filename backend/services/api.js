@@ -69,7 +69,7 @@ module.exports = {
 		let people = await People.findOne({rfid: rfid}).select({owners: 1}).exec()
 		if (people) {
 			peopleId = people._id
-			return {...data.view(), status: 'exists'}
+			return {...people.view(), status: 'exists'}
 		} else {
 			let people = await People.create(ctx.state.user)
 			people.rfid = rfid
