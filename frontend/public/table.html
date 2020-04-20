@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <title>體溫門禁系統</title>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
     <style type="text/css">
         @media(min-width: 100px) {
             .hide {
@@ -87,20 +88,9 @@
             window.open('https://sites.google.com/gs.ncku.edu.tw/temperature-measurement/' + src, 'temperature');   //跳转
             window.close();
         }
-        function build_table() {
-            var today = '3/20';
-            var today_data = [11, 22, 33];
-            var yesterday = '3/19';
-            var yesterday_data = [44, 55, 66];
-            var before_yesterday = '3/18';
-            var before_yesterday_data = [77, 88, 99];
-            document.getElementById("first_day").innerHTML = "<td>" + today + "</td>" + "<td>" + today_data[0] + "</td>" + "<td>" + today_data[1] + "</td>" + "<td>" + today_data[2] + "</td>";
-            document.getElementById("second_day").innerHTML = "<td>" + yesterday + "</td>" + "<td>" + yesterday_data[0] + "</td>" + "<td>" + yesterday_data[1] + "</td>" + "<td>" + yesterday_data[2] + "</td>";
-            document.getElementById("third_day").innerHTML = "<td>" + before_yesterday + "</td>" + "<td>" + before_yesterday_data[0] + "</td>" + "<td>" + before_yesterday_data[1] + "</td>" + "<td>" + before_yesterday_data[2] + "</td>";
-        }
     </script>
 </head>
-<body style="background-color : #000000" onload="build_table()">
+<body id="main" style="background-color : #000000">
     <div class="hide">
         <div class="header_out">
             <div class="header_in" onmousedown="jumpToOther('')">
@@ -137,5 +127,38 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+        function build_table(a, b, c, one, two, three) {
+            var today = one;
+            var today_data = [a[0], a[1], a[2]];
+            var yesterday = two;
+            var yesterday_data = [b[0], b[1], b[2]];
+            var before_yesterday = three;
+            var before_yesterday_data = [c[0], c[1], c[2]];
+            $("#first_day").append("<td>" + today + "</td>" + "<td>" + today_data[0] + "</td>" + "<td>" + today_data[1] + "</td>" + "<td>" + today_data[2] + "</td>");
+            $("#second_day").append("<td>" + yesterday + "</td>" + "<td>" + yesterday_data[0] + "</td>" + "<td>" + yesterday_data[1] + "</td>" + "<td>" + yesterday_data[2] + "</td>");
+            $("#third_day").append("<td>" + before_yesterday + "</td>" + "<td>" + before_yesterday_data[0] + "</td>" + "<td>" + before_yesterday_data[1] + "</td>" + "<td>" + before_yesterday_data[2] + "</td>");
+        }
+        $(document).ready(function () {
+            var x = [-1, -1, -1];
+            var y = [-1, -1, -1];
+            var z = [-1, -1, -1];
+            $.ajax({
+                url: "https://anticov.tew.tw/api/v1/table",
+                type: "GET",
+                dataType: "json",
+                timeout: 5000,
+                success: function (data) {
+                    x = [data[0].total, data[0].fever, data[0].bad];
+                    y = [data[1].total, data[1].fever, data[1].bad];
+                    z = [data[2].total, data[2].fever, data[2].bad];
+                    build_table(x, y, z, data[3].date1, data[3].date2, data[3].date3);
+                },
+                error: function () {
+                    build_table(x, y, z, 'sever', 'have', 'problem');
+                }
+            });
+        });
+    </script>
 </body>
 </html>

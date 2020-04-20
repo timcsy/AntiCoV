@@ -106,7 +106,7 @@
             window.close();
         }
         function saveReport() {
-            jumpToOther('sign - up');
+            //jumpToOther('首頁');
         }
     </script>
 </head>
@@ -131,12 +131,11 @@
         <div class="header_out" style="margin-top:80px;color:white;font-family:'Microsoft YaHei UI'">
             <div class="header_in">
                 <span class="word">用戶註冊</span>
-                <form id="showDataForm" action="https://reqres.in/api/users" method="post" onsubmit="saveReport();">
-                    <input id="Text1" type="text" class="document" placeholder="請填入你的學號" required="required" />
+                <form id="showDataForm" action="https://anticov.tew.tw/signup" method="POST" onsubmit="saveReport();">
+                    <input id="Text1" name="username" type="text" class="document" placeholder="請填入你的帳號" required="required" />
                     <br />
-                    <input id="Text1" type="text" class="document" placeholder="請填入你的姓名" required="required" />
+                    <input id="Text1" name="password" type="text" class="document" placeholder="請填入你的密碼" required="required" />
                     <br />
-                    <input id="Text1" type="text" class="document" placeholder="請填入你的科系" required="required" />
                     <input class="square" id="Submit1" type="submit" value="Websubmit" style="color:white;background-color:black" />
                 </form>
             </div>
