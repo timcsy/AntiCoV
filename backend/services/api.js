@@ -3,7 +3,7 @@ const Record = require('../models/Data/Record')
 const Flow = require('../models/Data/Flow')
 
 let peopleId = null // global rfid (who is using)
-let lastTime = null
+let lastTime = Date.now()
 
 module.exports = {
 	async getTemperature(ctx) {
