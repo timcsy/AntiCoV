@@ -13,7 +13,7 @@ module.exports = {
 		let records = await Record.find({time: {$gte: time}}).exec()
 		let one = 0, two = 0, three = 0, four = 0, five = 0, six = 0, seven = 0
 		records.map(r => {
-			t = r.view().temperature
+			t = r.temperature
 			if (t < 34) one++
 			else if (t < 35) two++
 			else if (t < 36) three++
@@ -66,10 +66,10 @@ module.exports = {
 		}
 		let records = await Record.find({time: {$gte: time}}).exec()
 		for (let record of records) {
-			const t = record.view().temperatue
+			const t = record.temperature
 			if (t > 37.5) fever++
 			total++
-			if (!isNaN(record.temperatue)) total_temp += record.temperatue
+			if (!isNaN(record.temperature)) total_temp += record.temperature
 		}
 		return {
 			avg_temp: total_temp / total,
