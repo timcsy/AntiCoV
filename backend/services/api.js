@@ -13,13 +13,14 @@ module.exports = {
 		let one = 0, two = 0, three = 0, four = 0, five = 0, six = 0, seven = 0
 		records.map(r => {
 			t = r.view().temperatue
-			if (r.temperatue < 34) one++
+			console.log(t)
+			if (t < 34) one++
 			else if (t < 35) two++
 			else if (t < 36) three++
 			else if (t < 37) four++
 			else if (t < 38) five++
 			else if (t < 39) six++
-			else seven++
+			else if (t >=39) seven++
 		})
 		return {
 			one, two, three, four, five, six, seven
