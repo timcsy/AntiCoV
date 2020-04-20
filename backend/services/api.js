@@ -27,56 +27,26 @@ module.exports = {
 		}
 	},
 	async table(ctx) {
-		return [
+		let date1 = moment(new Date)
+		let date2 = date1.subtract(1, 'days')
+		let date3 = date2.subtract(1, 'days')
+		let date4 = date3.subtract(1, 'days')
+		data1 = stat(date2.format('YYYY-MM-DD'), date1.format('YYYY-MM-DD'))
+		data2 = stat(date3.format('YYYY-MM-DD'), date2.format('YYYY-MM-DD'))
+		data3 = stat(date4.format('YYYY-MM-DD'), date3.format('YYYY-MM-DD'))
+		return [ //回傳 昨天 前天 大前天的 均溫 總人數 發燒數 違規數
+			stat(date2.format('YYYY-MM-DD'), date1.format('YYYY-MM-DD')),
+			stat(date3.format('YYYY-MM-DD'), date2.format('YYYY-MM-DD')),
+			stat(date4.format('YYYY-MM-DD'), date3.format('YYYY-MM-DD')),
 			{
-				total: 30,
-				fever: 1,
-				bad: 2
-			},
-			{
-				total: 30,
-				fever: 1,
-				bad: 2
-			},
-			{
-				total: 30,
-				fever: 1,
-				bad: 2
-			}, //回傳 昨天 前天 大前天的 總人數 發燒數 違規數
-			{
-				date1: "4/10",
-				date2: "4/9",
-				date3: "4/8"
+				date1: date2.format('MM/DD'),
+				date2: date3.format('MM/DD'),
+				date3: date4.format('MM/DD')
 			}
 		]
 	},
 	async statistics(ctx) {
-		let enter = 0
-		let exit = 0
-		let fever = 0
-		let total = 0
-		let total_temp = 0
-		const time = moment(new Date).format('YYYY-MM-DD')
-		let flow = await Flow.find({time: {$gte: time}}).exec()
-		for (let record of flow) {
-			if (record.number) {
-				if (record.status == 'enter') enter += record.number
-				else if (record.status == 'exit') exit += record.number
-			}
-		}
-		let records = await Record.find({time: {$gte: time}}).exec()
-		for (let record of records) {
-			const t = record.temperature
-			if (t > 37.5) fever++
-			total++
-			if (!isNaN(record.temperature)) total_temp += record.temperature
-		}
-		return {
-			avg_temp: total_temp / total,
-			total,
-			fever,
-			bad: enter - total
-		}
+		return stat(moment(new Date).format('YYYY-MM-DD'), Date.now())
 	},
 	async search(ctx, studentId) {
 		let people = await People.findOne({studentId: studentId}).select({owners: 1}).exec()
@@ -204,5 +174,33 @@ async function monit() {
 			"alarm": "bad",
 			"time": Date.now()
 		})
+	}
+}
+
+async function stat(start, end) {
+	let enter = 0
+	let exit = 0
+	let fever = 0
+	let total = 0
+	let total_temp = 0
+	let flow = await Flow.find({time: {$gte: start, $lte: end}}).exec()
+	for (let record of flow) {
+		if (record.number) {
+			if (record.status == 'enter') enter += record.number
+			else if (record.status == 'exit') exit += record.number
+		}
+	}
+	let records = await Record.find({time: {$gte: start, $lte: end}}).exec()
+	for (let record of records) {
+		const t = record.temperature
+		if (t > 37.5) fever++
+		total++
+		if (!isNaN(record.temperature)) total_temp += record.temperature
+	}
+	return {
+		avg_temp: total_temp / total,
+		total,
+		fever,
+		bad: (enter + exit) / 2 - total
 	}
 }
