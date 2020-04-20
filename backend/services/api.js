@@ -131,6 +131,7 @@ async function monit() {
 		if (record.status == 'enter') enter++
 		else if (record.status == 'exit') exit++
 	}
+	console.log('enter =', enter, ', exit =', exit)
 	let record = []
 	if (lastTime) record = await Record.find({time: {$gte: lastTime}}).exec()
 	let measure = record.length
