@@ -27,7 +27,7 @@ module.exports = {
 		}
 	},
 	async table(ctx) {
-		let date1 = moment(new Date())
+		let date1 = moment(Date.now())
 		let date2 = date1.subtract(1, 'days')
 		let date3 = date2.subtract(1, 'days')
 		let date4 = date3.subtract(1, 'days')
@@ -35,13 +35,35 @@ module.exports = {
 		data2 = stat(date3.format('YYYY-MM-DD'), date2.format('YYYY-MM-DD'))
 		data3 = stat(date4.format('YYYY-MM-DD'), date3.format('YYYY-MM-DD'))
 		return [ //回傳 昨天 前天 大前天的 均溫 總人數 發燒數 違規數
-			stat(date2.format('YYYY-MM-DD'), date1.format('YYYY-MM-DD')),
-			stat(date3.format('YYYY-MM-DD'), date2.format('YYYY-MM-DD')),
-			stat(date4.format('YYYY-MM-DD'), date3.format('YYYY-MM-DD')),
+			data1,
+			data2,
+			data3,
 			{
 				date1: date2.format('MM/DD'),
 				date2: date3.format('MM/DD'),
 				date3: date4.format('MM/DD')
+			}
+		]
+		return [
+			{
+				total: 30,
+				fever: 1,
+				bad: 2
+			},
+			{
+				total: 30,
+				fever: 1,
+				bad: 2
+			},
+			{
+				total: 30,
+				fever: 1,
+				bad: 2
+			}, //回傳 昨天 前天 大前天的 總人數 發燒數 違規數
+			{
+				date1: "4/10",
+				date2: "4/9",
+				date3: "4/8"
 			}
 		]
 	},
