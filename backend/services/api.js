@@ -95,12 +95,14 @@ module.exports = {
 		people = await People.findById(people._id).exec()
 		return people.view()
 	},
-	async setTemperature(temperature) {
+	async setTemperature(ctx, temperature) {
 		let record = await Record.create(ctx.state.user)
 		record.temperature = temperature
 		if (!peopleId) {
-			ctx.status = 404
-			return
+			return {
+				"success": false,
+				"message": 'RFID Doen not exist'
+			}
 		}
 		record.people = peopleId
 		await record.save()
