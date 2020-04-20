@@ -28,9 +28,13 @@ module.exports = {
 	},
 	async table(ctx) {
 		let date1 = moment(Date.now())
+		console.log(date1)
 		let date2 = date1.subtract(1, 'days')
+		console.log(date2)
 		let date3 = date2.subtract(1, 'days')
+		console.log(date3)
 		let date4 = date3.subtract(1, 'days')
+		console.log(date4)
 		data1 = stat(date2.format('YYYY-MM-DD'), date1.format('YYYY-MM-DD'))
 		data2 = stat(date3.format('YYYY-MM-DD'), date2.format('YYYY-MM-DD'))
 		data3 = stat(date4.format('YYYY-MM-DD'), date3.format('YYYY-MM-DD'))
