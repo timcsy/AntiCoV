@@ -134,8 +134,8 @@ async function monit() {
 	let record = []
 	if (lastTime) record = await Record.find({time: {$gte: lastTime}}).exec()
 	let measure = record.length
-	lastTime = Date.now()
 	if (enter == exit && measure < enter) {
+		lastTime = Date.now()
 		console.log('Warning:', 'enter =', enter, ', exit =', exit, ', measure =', measure)
 	}
 }
