@@ -1,0 +1,145 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>體溫門禁系統</title>
+    <style type="text/css">
+        @media(min-width: 100px) {
+            .hide {
+                visibility: hidden;
+            }
+
+            .marge {
+                margin-top: -150px;
+                margin-left: 150px;
+            }
+
+            .document {
+                font-size: 10px;
+            }
+
+            .word {
+                font-size: 20px;
+            }
+
+            .square {
+                width: auto;
+                height: auto;
+            }
+        }
+
+        @media(min-width: 700px) {
+            .hide {
+                visibility: visible;
+            }
+
+            .marge {
+                margin-top: 110px;
+                margin-left: 0px;
+            }
+
+            .document {
+                font-size: x-large;
+            }
+
+            .word {
+                font-size: 50px;
+            }
+
+            .square {
+                width: 300px;
+                height: 50px;
+            }
+        }
+
+        .header_in {
+            font-size: 50px;
+            width: 675px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .header_out {
+            width: 500px;
+            height: 100px;
+            margin: auto;
+            position: relative;
+        }
+
+        .white {
+            color: #ffffff;
+            font-family: monospace;
+        }
+
+        .orange {
+            color: #000000;
+            background-color: #ffa700;
+            border-radius: 10px;
+            font-family: monospace;
+        }
+
+        .buttun {
+            width: 135px;
+            height: 40px;
+            border: 2px white;
+            font-size: xx-large;
+            color: #ffffff;
+            background-color: #000000;
+            text-align: center;
+            cursor: pointer;
+        }
+    </style>
+    <script>
+        function mouseOver(id) {
+            document.getElementById(id).style.color = '#000000';
+            document.getElementById(id).style.background = '#ffa700';
+        }
+        function mouseOut(id) {
+            document.getElementById(id).style.color = '#ffffff';
+            document.getElementById(id).style.background = '#000000';
+        }
+        function jumpToOther(src) {
+            window.open('https://sites.google.com/gs.ncku.edu.tw/temperature-measurement/' + src, 'temperature');   //跳转
+            window.close();
+        }
+        function saveReport() {
+            //jumpToOther('首頁');
+        }
+    </script>
+</head>
+<body style="background-color : #000000">
+    <div class="hide">
+        <div class="header_out">
+            <div class="header_in" onmousedown="jumpToOther('')">
+                <b class="white">temperature</b> <b class="orange">&nbsp;measurement&nbsp;</b>
+            </div>
+        </div>
+        <div class="header_out">
+            <div class="header_in" style="font-size:0">
+                <input id="diagram" onmouseover="mouseOver(this.id)" onmouseout="mouseOut(this.id)" onmousedown="jumpToOther('/首頁/'+this.id)" class="buttun" type="button" value="Diagram" />
+                <input id="table" onmouseover="mouseOver(this.id)" onmouseout="mouseOut(this.id)" onmousedown="jumpToOther('/首頁/'+this.id)" class="buttun" type="button" value="Table" />
+                <input id="sign-up" onmouseover="mouseOver(this.id)" onmouseout="mouseOut(this.id)" onmousedown="jumpToOther('/首頁/'+this.id)" class="buttun" type="button" value="Sign Up" style="border-bottom:2px #ffa700 solid" />
+                <input id="control" onmouseover="mouseOver(this.id)" onmouseout="mouseOut(this.id)" onmousedown="jumpToOther('/首頁/'+this.id)" class="buttun" type="button" value="Control" />
+                <input id="about" onmouseover="mouseOver(this.id)" onmouseout="mouseOut(this.id)" onmousedown="jumpToOther('/首頁/'+this.id)" class="buttun" type="button" value="About" />
+            </div>
+        </div>
+    </div>
+    <div class="marge">
+        <div class="header_out" style="margin-top:80px;color:white;font-family:'Microsoft YaHei UI'">
+            <div class="header_in">
+                <span class="word">用戶註冊</span>
+                <form id="showDataForm" action="https://anticov.tew.tw/signup" method="POST" onsubmit="saveReport();">
+                    <input id="Text1" name="username" type="text" class="document" placeholder="請填入你的帳號" required="required" />
+                    <br />
+                    <input id="Text1" name="password" type="text" class="document" placeholder="請填入你的密碼" required="required" />
+                    <br />
+                    <input class="square" id="Submit1" type="submit" value="Websubmit" style="color:white;background-color:black" />
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

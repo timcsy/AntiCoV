@@ -1,0 +1,194 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" content="width=device-width, initial-scale=1" />
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <title>體溫門禁系統</title>
+    <style type="text/css">
+        @media(min-width: 100px) {
+            .hide {
+                visibility: hidden;
+            }
+
+            .margin {
+                margin-top: -110px;
+            }
+
+            .header_in {
+                font-size: 10px;
+                width: 700px;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+
+            .header_out {
+                width: 700px;
+                height: 100px;
+                margin: auto;
+                position: relative;
+            }
+
+            .white {
+                color: #ffffff;
+                font-family: monospace;
+            }
+
+            .orange {
+                color: #000000;
+                background-color: #ffa700;
+                border-radius: 1px;
+                font-family: monospace;
+            }
+
+            .buttun {
+                width: 40px;
+                height: 20px;
+                border: 1px white;
+                font-size: 10px;
+                color: #ffffff;
+                background-color: #000000;
+                text-align: center;
+                cursor: pointer;
+            }
+
+            .password {
+                font-size: 10px;
+            }
+
+            .downword {
+                font-size: 10px;
+            }
+        }
+
+        @media(min-width: 700px) {
+            .hide {
+                visibility: visible;
+            }
+
+            .margin {
+                margin-top: 110px;
+            }
+
+            .header_in {
+                font-size: 50px;
+                width: 675px;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+
+            .header_out {
+                width: 500px;
+                height: 100px;
+                margin: auto;
+                position: relative;
+            }
+
+            .white {
+                color: #ffffff;
+                font-family: monospace;
+            }
+
+            .orange {
+                color: #000000;
+                background-color: #ffa700;
+                border-radius: 10px;
+                font-family: monospace;
+            }
+
+            .buttun {
+                width: 135px;
+                height: 40px;
+                border: 2px white;
+                font-size: xx-large;
+                color: #ffffff;
+                background-color: #000000;
+                text-align: center;
+                cursor: pointer;
+            }
+
+            .password {
+                font-size: xx-large;
+            }
+
+            .downword {
+                font-size: x-large;
+            }
+        }
+    </style>
+    <script>
+        function mouseOver(id) {
+            document.getElementById(id).style.color = '#000000';
+            document.getElementById(id).style.background = '#ffa700';
+        }
+        function mouseOut(id) {
+            document.getElementById(id).style.color = '#ffffff';
+            document.getElementById(id).style.background = '#000000';
+        }
+        function jumpToOther(src) {
+            window.open('https://sites.google.com/gs.ncku.edu.tw/temperature-measurement/' + src, 'temperature');   //跳转
+            window.close();
+        }
+        //function show_control(id, user, pword) {
+        //    requestapi('https://anticov.tew.tw/api/v1/login', { 'username': user, 'password': pword }, 'POST');
+        //}
+    </script>
+</head>
+<body style="background-color : #000000" onload="">
+    <div class="hide">
+        <div class="header_out">
+            <div class="header_in" onmousedown="jumpToOther('')">
+                <b class="white">temperature</b> <b class="orange">&nbsp;measurement&nbsp;</b>
+            </div>
+        </div>
+        <div class="header_out">
+            <div class="header_in" style="font-size:0">
+                <input id="diagram" onmouseover="mouseOver(this.id)" onmouseout="mouseOut(this.id)" onmousedown="jumpToOther('/首頁/'+this.id)" class="buttun" type="button" value="Diagram" />
+                <input id="table" onmouseover="mouseOver(this.id)" onmouseout="mouseOut(this.id)" onmousedown="jumpToOther('/首頁/'+this.id)" class="buttun" type="button" value="Table" />
+                <input id="sign-up" onmouseover="mouseOver(this.id)" onmouseout="mouseOut(this.id)" onmousedown="jumpToOther('/首頁/'+this.id)" class="buttun" type="button" value="Sign Up" />
+                <input id="control" onmouseover="mouseOver(this.id)" onmouseout="mouseOut(this.id)" onmousedown="jumpToOther('/首頁/'+this.id)" class="buttun" type="button" value="Control" style="border-bottom:2px #ffa700 solid" />
+                <input id="about" onmouseover="mouseOver(this.id)" onmouseout="mouseOut(this.id)" onmousedown="jumpToOther('/首頁/'+this.id)" class="buttun" type="button" value="About" />
+            </div>
+        </div>
+    </div>
+    <div class="margin">
+        <div class="header_out" style="font-family:'Microsoft YaHei UI'; ">
+            <div class="header_in">
+                <span style="color:white; " class="password">工程師專區:</span>
+                <br />
+                <input id="username" type="text" value="" placeholder="請填入工程師帳號" required="required" class="password" />
+                <br />
+                <input id="secret" type="password" value="" placeholder="請填入工程師密碼" required="required" class="password" />
+                <br />
+                <input id="Button_in" type="button" onmouseover="mouseOver(this.id)" onmouseout="mouseOut(this.id)" class="buttun" value="confirm" style="margin-left:5px" />
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#Button_in").click(function () { //ID 為 Button1 的按鈕被點擊時
+                $.ajax({
+                    url: "https://anticov.tew.tw/api/v1/login",
+                    type: "post",
+                    data: {
+                        username: $("#username").val(),
+                        password: $("#secret").val()
+                    },
+                    timeout: 5000,
+                    success: function (data) {
+                        window.open("anticov.tew.tw" + "?token=" + data);   //跳转
+                        window.close();
+                    },
+                    error: function () {
+                        $("#username").val("connect error");
+                    }
+                });
+            })
+        });
+    </script>
+</body>
+</html>
