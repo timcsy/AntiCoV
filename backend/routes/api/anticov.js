@@ -20,7 +20,7 @@ router.get('/statistics', RBAC.auth(true), async (ctx) => {
 })
 
 // 查詢(特定ID狀況)
-router.get('/people/:studentId', RBAC.auth(), RBAC.middleware('people:get'), async (ctx) => {
+router.get('/people/:studentId', RBAC.auth(), async (ctx) => {
 	ctx.body = await service.search(ctx, ctx.params.studentId)
 })
 
@@ -31,13 +31,13 @@ router.post('/pass', RBAC.auth(true), async (ctx) => {
 })
 
 // 逼卡
-router.post('/temperature', RBAC.auth(true), RBAC.middleware('people:post'), async (ctx) => {
+router.post('/temperature', RBAC.auth(), async (ctx) => {
 	ctx.body = await service.pass(ctx, ctx.request.body.rfid)
 	ctx.status = 201
 })
 
 // 逼卡註冊
-router.post('/people', RBAC.auth(true), RBAC.middleware('people:post'), async (ctx) => {
+router.post('/people', RBAC.auth(), async (ctx) => {
 	ctx.body = await service.pass(ctx, ctx.request.body.rfid, ctx.request.body.studentId, ctx.request.body.name)
 	ctx.status = 201
 })
