@@ -1,6 +1,7 @@
 const People = require('../models/Data/People')
 const Record = require('../models/Data/Record')
 const Flow = require('../models/Data/Flow')
+const send = require('../routes/ws/index').send
 
 let peopleId = null // global rfid (who is using)
 let lastTime = Date.now()
@@ -112,7 +113,16 @@ module.exports = {
 		record = await Record.findById(record._id).exec()
 
 		if (temperature > 37.5) {
+			people = await People.findById(people._id).exec()
 			console.log('Fever: ', temperature)
+			send({
+				"alarm": "fever",
+				"temperatue": temperature,
+				"rfid": people.rfid,
+				"studentId": people.studentId,
+				"name": people.name,
+				"time": Date,now()
+			})
 		}
 
 		await monit()
@@ -128,8 +138,8 @@ async function monit() {
 	let flow =  []
 	if (lastTime) flow = await Flow.find({time: {$gte: lastTime}}).exec()
 	for (let record of flow) {
-		if (record.status == 'enter') enter++
-		else if (record.status == 'exit') exit++
+		if (record.status == 'enter') enter += record.number
+		else if (record.status == 'exit') exit += record.number
 	}
 	console.log('enter =', enter, ', exit =', exit)
 	let record = []
@@ -138,5 +148,9 @@ async function monit() {
 	if (enter == exit && measure < enter) {
 		lastTime = Date.now()
 		console.log('Warning:', 'enter =', enter, ', exit =', exit, ', measure =', measure)
+		send({
+			"alarm": "bad",
+			"time": Date.now()
+		})
 	}
 }
