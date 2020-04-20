@@ -9,7 +9,8 @@ let lastTime = Date.now()
 
 module.exports = {
 	async getTemperature(ctx) {
-		let records = await Record.find({}).exec()
+		const time = moment(new Date).format('YYYY-MM-DD')
+		let records = await Record.find({time: {$gte: time}}).exec()
 		let one = 0, two = 0, three = 0, four = 0, five = 0, six = 0, seven = 0
 		records.map(r => {
 			t = r.view().temperature
@@ -50,11 +51,31 @@ module.exports = {
 		]
 	},
 	async statistics(ctx) {
+		let enter = 0
+		let exit = 0
+		let fever = 0
+		let total = 0
+		let total_temp = 0
+		const time = moment(new Date).format('YYYY-MM-DD')
+		let flow = await Flow.find({time: {$gte: time}}).exec()
+		for (let record of flow) {
+			if (record.number) {
+				if (record.status == 'enter') enter += record.number
+				else if (record.status == 'exit') exit += record.number
+			}
+		}
+		let records = await Record.find({time: {$gte: time}}).exec()
+		for (let record of records) {
+			const t = record.view().temperatue
+			if (t > 37.5) fever++
+			total++
+			if (!isNaN(record.temperatue)) total_temp += record.temperatue
+		}
 		return {
-			avg_temp: 32,
-			total: 44,
-			fever: 4,
-			bad: 3
+			avg_temp: total_temp / total,
+			total,
+			fever,
+			bad: enter - total
 		}
 	},
 	async search(ctx, studentId) {
@@ -167,8 +188,10 @@ async function monit() {
 	let flow =  []
 	if (lastTime) flow = await Flow.find({time: {$gte: lastTime}}).exec()
 	for (let record of flow) {
-		if (record.status == 'enter') enter += record.number
-		else if (record.status == 'exit') exit += record.number
+		if (record.number) {
+			if (record.status == 'enter') enter += record.number
+			else if (record.status == 'exit') exit += record.number
+		}
 	}
 	console.log('enter =', enter, ', exit =', exit)
 	let record = []
