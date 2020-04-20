@@ -1,6 +1,5 @@
 const Router = require('koa-router')
 const RBAC = require('../../lib/rbac')
-const service = require('../../services/api.js')
 
 const sockets = [] // to store the incoming socket
 
@@ -17,6 +16,7 @@ router.all('/data', RBAC.auth(), async (ctx) => {
 		const msg = JSON.parse(message)
 		console.log(ctx.state.user + message)
 		if (msg.cmd === 'temperature') {
+			const service = require('../../services/api.js')
 			send(await service.setTemperature(ctx, msg.temperature))
 		}
 	})
