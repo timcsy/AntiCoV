@@ -136,6 +136,6 @@ async function monit() {
 	let measure = record.length
 	lastTime = Date.now()
 	if (enter == exit && measure != enter) {
-		console.log('Warning')
+		console.log('Warning:', 'enter =', enter, ', exit =', exit, ', measure =', measure)
 	}
 }
