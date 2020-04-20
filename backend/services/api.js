@@ -121,7 +121,7 @@ module.exports = {
 				"rfid": people.rfid,
 				"studentId": people.studentId,
 				"name": people.name,
-				"time": Date,now()
+				"time": Date.now()
 			})
 		}
 
