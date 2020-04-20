@@ -51,6 +51,27 @@ module.exports = {
 		}
 	},
 	async search(ctx, studentId) {
+		let people = await People.findOne({studentId: studentId}).select({owners: 1}).exec()
+		if (people) {
+			const result = {
+				name: people.name,
+				studentId: people.studentId,
+				rfid: people.rfid
+			}
+			const time = Date.now().toISOString().substring(0, 10)
+			const record = await Record.find({people: people._id, time: {$gte: time}}).exec()
+			if (record) {
+				if (record.temperature < 37.5) {
+					result.situation = 'OK'
+				} else {
+					result.situation = 'not OK'
+				}
+			} else {
+				result.situation = 'NULL'
+			}
+			return result
+		}
+		ctx.status = 404
 		return {
 			name: '王小明',
 			situation: 'OK/not OK/NULL',//今天的溫度量測狀態 通過,發燒,今天沒來
