@@ -11,8 +11,7 @@ module.exports = {
 	async getTemperature(ctx) {
 		let records = await Record.find({}).exec()
 		let one = 0, two = 0, three = 0, four = 0, five = 0, six = 0, seven = 0
-		for (let record of records) {
-			r = record.view()
+		records.map(r => {
 			if (r.temperatue < 34) one++
 			else if (r.temperatue < 35) two++
 			else if (r.temperatue < 36) three++
@@ -20,7 +19,7 @@ module.exports = {
 			else if (r.temperatue < 38) five++
 			else if (r.temperatue < 39) six++
 			else seven++
-		}
+		})
 		return {
 			one, two, three, four, five, six, seven
 		}
