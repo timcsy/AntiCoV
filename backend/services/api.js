@@ -31,7 +31,6 @@ module.exports = {
 		let date2 = moment(date1).subtract(1, 'days')
 		let date3 = moment(date2).subtract(1, 'days')
 		let date4 = moment(date3).subtract(1, 'days')
-		console.log(date4)
 		data1 = stat(date2.format('YYYY-MM-DD'), date1.format('YYYY-MM-DD'))
 		data2 = stat(date3.format('YYYY-MM-DD'), date2.format('YYYY-MM-DD'))
 		data3 = stat(date4.format('YYYY-MM-DD'), date3.format('YYYY-MM-DD'))
@@ -43,28 +42,6 @@ module.exports = {
 				date1: date2.format('MM/DD'),
 				date2: date3.format('MM/DD'),
 				date3: date4.format('MM/DD')
-			}
-		]
-		return [
-			{
-				total: 30,
-				fever: 1,
-				bad: 2
-			},
-			{
-				total: 30,
-				fever: 1,
-				bad: 2
-			},
-			{
-				total: 30,
-				fever: 1,
-				bad: 2
-			}, //回傳 昨天 前天 大前天的 總人數 發燒數 違規數
-			{
-				date1: "4/10",
-				date2: "4/9",
-				date3: "4/8"
 			}
 		]
 	},
