@@ -113,7 +113,7 @@ module.exports = {
 		record = await Record.findById(record._id).exec()
 
 		if (temperature > 37.5) {
-			let people = await People.findById(people._id).exec()
+			let people = await People.findById(peopleId).exec()
 			console.log('Fever: ', temperature, people.studentId, people.name)
 			send({
 				"alarm": "fever",
