@@ -18,6 +18,12 @@ line_bot_api = LineBotApi(config.linePara['ChannelAccessToken'])
 # Channel Secret
 handler = WebhookHandler(config.linePara['ChannelSecret'])
 
+user_id = config.linePara['UserID']
+
+'''@app.route("/push_function/<string:push_text_str>")
+def push_message(push_text_str):
+    line_bot_api.push_message(user_id, TextSendMessage(text=push_text_str))
+
 # 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])
 def callback():
@@ -38,7 +44,7 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     message = TextSendMessage(text=event.message.text)
-    line_bot_api.reply_message(event.reply_token, message)
+    line_bot_api.reply_message(event.reply_token, message)'''
 
 # 對多人傳訊息
 @app.route("/broadcast_function/<string:broadcast_text_str>")
@@ -56,6 +62,16 @@ def location_send_message(package_id, sticker_id):
 
 import os
 if __name__ == "__main__":
-    #port = int(os.environ.get('PORT', 5000))
-    #app.run(host='0.0.0.0', port=port)
-    app.run()
+    
+    '''Webhook_URL = 'https://anticov.herokuapp.com/broadcast_message/'
+
+    try:
+        push_str = sys.argv[1]
+    except Exception:
+        push_str = None
+
+    LineBot = LineBotFunction(push_str, Webhook_URL)
+    LineBot.push_message()'''
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
+    #app.run()
