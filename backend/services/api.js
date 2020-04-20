@@ -3,6 +3,7 @@ const Record = require('../models/Data/Record')
 const Flow = require('../models/Data/Flow')
 
 let peopleId = null // global rfid (who is using)
+let lastTime = null
 
 module.exports = {
 	async getTemperature(ctx) {
@@ -63,6 +64,7 @@ module.exports = {
 		await flow.save()
 
 		flow = await Flow.findById(flow._id).exec()
+		await monit()
 		return flow.view()
 	},
 	async card(ctx, rfid) {
@@ -108,8 +110,32 @@ module.exports = {
 		await record.save()
 
 		record = await Record.findById(record._id).exec()
+
+		if (temperature > 37.5) {
+			console.log('Fever: ', temperature)
+		}
+
+		await monit()
 		return {
 			"success": true
 		}
+	}
+}
+
+async function monit() {
+	let enter = 0
+	let exit = 0
+	let flow =  []
+	if (lastTime) flow = await Flow.find({time: {$gte: lastTime}}).exec()
+	for (let record of flow) {
+		if (record.status === 'enter') enter++
+		else if (record.status === 'exit') exit++
+	}
+	let record = []
+	if (lastTime) record = await Record.find({time: {$gte: lastTime}}).exec()
+	let measure = record.length
+	lastTime = Date.now()
+	if (enter == exit && measure != enter) {
+		console.log('Warning')
 	}
 }
