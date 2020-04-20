@@ -53,6 +53,7 @@ module.exports = {
 	async search(ctx, studentId) {
 		let people = await People.findOne({studentId: studentId}).select({owners: 1}).exec()
 		if (people) {
+			people = await People.findById(people._id).exec()
 			let situation = 'NULL'
 			const time = new Date().toISOString().substring(0, 10)
 			const record = await Record.find({people: people._id, time: {$gte: time}}).exec()
