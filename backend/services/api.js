@@ -58,7 +58,7 @@ module.exports = {
 				studentId: people.studentId,
 				rfid: people.rfid
 			}
-			const time = Date.now().toISOString().substring(0, 10)
+			const time = new Date().toISOString().substring(0, 10)
 			const record = await Record.find({people: people._id, time: {$gte: time}}).exec()
 			if (record) {
 				if (record.temperature < 37.5) {
