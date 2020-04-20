@@ -53,22 +53,22 @@ module.exports = {
 	async search(ctx, studentId) {
 		let people = await People.findOne({studentId: studentId}).select({owners: 1}).exec()
 		if (people) {
-			let result = {}
-			result['name'] = people.name
-			result['studentId'] = people.studentId
-			result['rfid'] = people.rfid
+			let situation = 'NULL'
 			const time = new Date().toISOString().substring(0, 10)
 			const record = await Record.find({people: people._id, time: {$gte: time}}).exec()
 			if (record) {
 				if (record.temperature < 37.5) {
-					result['situation'] = 'OK'
+					situation = 'OK'
 				} else {
-					result['situation'] = 'not OK'
+					situation = 'not OK'
 				}
-			} else {
-				result['situation'] = 'NULL'
 			}
-			return result
+			return {
+				name: people.name,
+				studentId: people.studentId,
+				rfid: people.rfid,
+				situation: situation
+			}
 		}
 		ctx.status = 404
 		return {
