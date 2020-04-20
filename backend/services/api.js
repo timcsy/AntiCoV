@@ -1,29 +1,38 @@
 module.exports = {
 	async getTemperature(ctx) {
 		return {
-			"30to31": 2,
-			"31to32": 3,
-			"32to33": 5
+			one: 1, // < 34
+			two: 2, // 34 - 35
+			three: 3, // 35 - 36
+			four: 4, // 36 - 37
+			five: 5, // 37 - 38
+			six: 6, // 38 - 39
+			seven: 7 // >= 39
 		}
 	},
 	async table(ctx) {
-		return {
-			"date1":{
+		return [
+			{
 				total: 30,
 				fever: 1,
 				bad: 2
 			},
-			"date2":{
+			{
 				total: 30,
 				fever: 1,
 				bad: 2
 			},
-			"date3":{
+			{
 				total: 30,
 				fever: 1,
 				bad: 2
-			}  //回傳 昨天 前天 大前天的 總人數 發燒數 違規數
-		}
+			}, //回傳 昨天 前天 大前天的 總人數 發燒數 違規數
+			{
+				date1: "4/10",
+				date2: "4/9",
+				date3: "4/8"
+			}
+		]
 	},
 	async statistics(ctx) {
 		return {
