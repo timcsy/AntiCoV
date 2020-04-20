@@ -3,7 +3,7 @@ const Record = require('../models/Data/Record')
 const Flow = require('../models/Data/Flow')
 
 let peopleId = null // global rfid (who is using)
-let lastTime = null
+let lastTime = Date.now()
 
 module.exports = {
 	async getTemperature(ctx) {
@@ -131,6 +131,7 @@ async function monit() {
 		if (record.status == 'enter') enter++
 		else if (record.status == 'exit') exit++
 	}
+	console.log('enter =', enter, ', exit =', exit)
 	let record = []
 	if (lastTime) record = await Record.find({time: {$gte: lastTime}}).exec()
 	let measure = record.length
