@@ -12,13 +12,13 @@ module.exports = {
 		let records = await Record.find({}).exec()
 		let one = 0, two = 0, three = 0, four = 0, five = 0, six = 0, seven = 0
 		records.map(r => {
-			console.log(r.view())
+			t = r.view().temperatue
 			if (r.temperatue < 34) one++
-			else if (r.temperatue < 35) two++
-			else if (r.temperatue < 36) three++
-			else if (r.temperatue < 37) four++
-			else if (r.temperatue < 38) five++
-			else if (r.temperatue < 39) six++
+			else if (t < 35) two++
+			else if (t < 36) three++
+			else if (t < 37) four++
+			else if (t < 38) five++
+			else if (t < 39) six++
 			else seven++
 		})
 		return {
