@@ -26,12 +26,13 @@ LiquidCrystal_I2C lcd(0x27, 16, 2);
 StaticJsonDocument<200> doc;
 WebsocketsClient client;
 
-
+void(* resetFunc) (void) = 0;//declare reset function at address 0
 int isOn;
 
 String getAuthorizedToken(std::unique_ptr<BearSSL::WiFiClientSecure>& loginClient){
   HTTPClient https;
   String payload;
+  ESP8266network.loop();
   Serial.print("[HTTPS] begin...\n");
   if(https.begin(*loginClient, host)){
     https.addHeader("Content-Type", "application/json");
@@ -42,7 +43,7 @@ String getAuthorizedToken(std::unique_ptr<BearSSL::WiFiClientSecure>& loginClien
     }
     else{
      Serial.println(httpsCode);
-     Serial.println("Failed to post\n");
+     Serial.printf("Failed to post %s\n", https.errorToString(httpsCode).c_str());
 
     }
     
@@ -74,7 +75,8 @@ void onEventsCallback(WebsocketsEvent event, String data) {
         Serial.println("Connnection Opened");
     } else if(event == WebsocketsEvent::ConnectionClosed) {
         Serial.println("Connnection Closed");
-        client.connect(websocketsServerHost.c_str());
+        resetFunc();
+        
     } else if(event == WebsocketsEvent::GotPing) {
         Serial.println("Got a Ping!");
     } else if(event == WebsocketsEvent::GotPong) {
@@ -104,7 +106,7 @@ void PostTemp(float temp) {
 void test() {
   
 
-    ESP8266network.loop();
+    
 
     float temp = getTemp();
     delay(500);
@@ -119,6 +121,39 @@ void test() {
   
 }
 
+void websocketConnecting(){
+  std::unique_ptr<BearSSL::WiFiClientSecure>loginClient(new BearSSL::WiFiClientSecure);
+  loginClient->setFingerprint(LOGIN_FINGER_PRINT);
+  authToken = getAuthorizedToken(loginClient);
+
+  String url = (websocketsServerHost + authToken);
+  
+  
+  Serial.printf("We are now connecting to %s\n" , url.c_str());
+  //socket initialize
+  // run callback when messages are received
+  
+
+  client.onMessage(onMessageCallback);
+    
+  // run callback when events are occuring
+  client.onEvent(onEventsCallback);
+
+  client.setFingerprint(SSL_FINGER_PRINT);
+
+  // Connect to server
+  //client.connect(anticov_host, anticov_port, anticov_path);
+  client.connect(url.c_str());
+  
+  doc["cmd"] = "temperature";
+  doc["device"] = "board";
+  doc["temperature"] = 0;
+  String s;
+  serializeJson(doc, s);
+  Serial.println(s.c_str());
+ 
+  client.send(s.c_str());
+}
 
 
 void setup() {
@@ -148,27 +183,8 @@ void setup() {
   pinMode(SOUND, OUTPUT);
 
   // authorization
-  std::unique_ptr<BearSSL::WiFiClientSecure>loginClient(new BearSSL::WiFiClientSecure);
-  loginClient->setFingerprint(LOGIN_FINGER_PRINT);
-  authToken = getAuthorizedToken(loginClient);
-
-  websocketsServerHost += authToken;
-
-  Serial.printf("We are now connecting to %s\n" ,websocketsServerHost.c_str());
-  //socket initialize
-  // run callback when messages are received
-  client.onMessage(onMessageCallback);
-    
-  // run callback when events are occuring
-  client.onEvent(onEventsCallback);
-
-  client.setFingerprint(SSL_FINGER_PRINT);
-
-  // Connect to server
-  //client.connect(anticov_host, anticov_port, anticov_path);
-  client.connect(websocketsServerHost.c_str());
-
-  
+  // websockets connecting
+  websocketConnecting();
 
 
   // doc initialize 
@@ -178,19 +194,15 @@ void setup() {
   //   “device": "board"
   //   "temperature": Number
   // }
-  doc["cmd"] = "temperature";
-  doc["device"] = "board";
-  doc["temperature"] = 0;
-  String s;
-  serializeJson(doc, s);
-  Serial.println(s.c_str());
- 
-  client.send(s.c_str());
+
   Serial.println("Finish initialization");
 }
 
 void loop() {
-  client.poll();
+  ESP8266network.loop();
+  if(client.available()){
+    client.poll();
+  }
   isOn = digitalRead(BUTTON);
   if(isOn){
     sound(1);
