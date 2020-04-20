@@ -83,7 +83,10 @@ module.exports = {
 		}
 	},
 	async register(ctx, rfid, studentId, name) {
-		let people = await People.findById(peopleId).select({owners: 1}).exec()
+		let people = await People.findOne({rfid: rfid}).select({owners: 1}).exec()
+		if (!people) {
+			people = await People.create(ctx.state.user)
+		}
 		people.rfid = rfid
 		people.studentId = studentId
 		people.name = name
