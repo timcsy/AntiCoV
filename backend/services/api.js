@@ -1,3 +1,9 @@
+const People = require('../models/Data/People')
+const Record = require('../models/Data/Record')
+const Flow = require('../models/Data/Flow')
+
+let peopleId = null // global rfid (who is using)
+
 module.exports = {
 	async getTemperature(ctx) {
 		return {
@@ -50,24 +56,55 @@ module.exports = {
 			rfid: 'xxxxx'
 		}
 	},
-	async pass(ctx, status) {
-		
+	async pass(ctx, status, number) {
+		let flow = await Flow.create(ctx.state.user)
+		flow.status = status
+		flow.number = number
+		await flow.save()
+
+		flow = await Flow.findById(flow._id).exec()
+		return flow.view()
 	},
 	async card(ctx, rfid) {
-		return {
-			studentId: 'F740xxxxx',
-			name: '王小明',
-			status: "exists"
+		let people = await People.findOne({rfid: rfid}).select({owners: 1}).exec()
+		if (people) {
+			peopleId = people._id
+			return {...data.view(), status: 'exists'}
+		} else {
+			let people = await People.create(ctx.state.user)
+			people.rfid = rfid
+			await people.save()
+			peopleId = people._id
+			return {
+				studentId: null,
+				name: null,
+				status: "new"
+			}
 		}
 	},
 	async register(ctx, rfid, studentId, name) {
-		return {
-			"success": false
-		}
+		let people = await People.findById(peopleId).select({owners: 1}).exec()
+		people.rfid = rfid
+		people.studentId = studentId
+		people.name = name
+		await people.save()
+
+		people = await People.findById(people._id).exec()
+		return people.view()
 	},
 	async setTemperature(temperature) {
+		let record = await Record.create(ctx.state.user)
+		record.temperature = temperature
+		if (!peopleId) {
+			ctx.status = 404
+			return
+		}
+		record.people = peopleId
+		await record.save()
+
+		record = await Record.findById(record._id).exec()
 		return {
-			"success": false
+			"success": true
 		}
 	}
 }

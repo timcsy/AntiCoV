@@ -26,7 +26,7 @@ router.get('/people/:studentId', RBAC.auth(), RBAC.middleware('people:get'), asy
 
 // 人像偵測
 router.post('/pass', RBAC.auth(true), async (ctx) => {
-	ctx.body = await service.pass(ctx)
+	ctx.body = await service.pass(ctx, ctx.request.body.status, ctx.request.body.number)
 	ctx.status = 201
 })
 
@@ -38,7 +38,7 @@ router.post('/temperature', RBAC.auth(true), RBAC.middleware('people:post'), asy
 
 // 逼卡註冊
 router.post('/people', RBAC.auth(true), RBAC.middleware('people:post'), async (ctx) => {
-	ctx.body = await service.pass(ctx, ctx.request.body.rfid)
+	ctx.body = await service.pass(ctx, ctx.request.body.rfid, ctx.request.body.studentId, ctx.request.body.name)
 	ctx.status = 201
 })
 
