@@ -63,12 +63,12 @@ module.exports = {
 			const record = await Record.find({people: people._id, time: {$gte: time}}).exec()
 			if (record) {
 				if (record.temperature < 37.5) {
-					result.situation = 'OK'
+					result['situation'] = 'OK'
 				} else {
-					result.situation = 'not OK'
+					result['situation'] = 'not OK'
 				}
 			} else {
-				result.situation = 'NULL'
+				result['situation'] = 'NULL'
 			}
 			return result
 		}
