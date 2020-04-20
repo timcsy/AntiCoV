@@ -128,14 +128,14 @@ async function monit() {
 	let flow =  []
 	if (lastTime) flow = await Flow.find({time: {$gte: lastTime}}).exec()
 	for (let record of flow) {
-		if (record.status === 'enter') enter++
-		else if (record.status === 'exit') exit++
+		if (record.status == 'enter') enter++
+		else if (record.status == 'exit') exit++
 	}
 	let record = []
 	if (lastTime) record = await Record.find({time: {$gte: lastTime}}).exec()
 	let measure = record.length
 	lastTime = Date.now()
-	if (enter == exit && measure != enter) {
+	if (enter == exit && measure < enter) {
 		console.log('Warning:', 'enter =', enter, ', exit =', exit, ', measure =', measure)
 	}
 }
