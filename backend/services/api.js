@@ -9,7 +9,7 @@ let lastTime = Date.now()
 
 module.exports = {
 	async getTemperature(ctx) {
-		const time = moment(new Date).format('YYYY-MM-DD')
+		const time = moment(new Date()).format('YYYY-MM-DD')
 		let records = await Record.find({time: {$gte: time}}).exec()
 		let one = 0, two = 0, three = 0, four = 0, five = 0, six = 0, seven = 0
 		records.map(r => {
@@ -27,7 +27,7 @@ module.exports = {
 		}
 	},
 	async table(ctx) {
-		let date1 = moment(new Date)
+		let date1 = moment(new Date())
 		let date2 = date1.subtract(1, 'days')
 		let date3 = date2.subtract(1, 'days')
 		let date4 = date3.subtract(1, 'days')
@@ -46,7 +46,7 @@ module.exports = {
 		]
 	},
 	async statistics(ctx) {
-		return stat(moment(new Date).format('YYYY-MM-DD'), Date.now())
+		return stat(moment(new Date()).format('YYYY-MM-DD'), Date.now())
 	},
 	async search(ctx, studentId) {
 		let people = await People.findOne({studentId: studentId}).select({owners: 1}).exec()
