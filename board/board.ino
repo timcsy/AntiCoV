@@ -75,6 +75,10 @@ void onEventsCallback(WebsocketsEvent event, String data) {
         Serial.println("Connnection Opened");
     } else if(event == WebsocketsEvent::ConnectionClosed) {
         Serial.println("Connnection Closed");
+        lcd.clear();
+        lcd.println("Loss");
+        lcd.setCursor(0, 1);
+        lcd.println("Connection");
         resetFunc();
         
     } else if(event == WebsocketsEvent::GotPing) {
@@ -151,7 +155,6 @@ void websocketConnecting(){
   String s;
   serializeJson(doc, s);
   Serial.println(s.c_str());
- 
   client.send(s.c_str());
 }
 
@@ -165,7 +168,9 @@ void setup() {
   // lcd initialization
   
   lcd.setBacklight((uint8_t)1);// Turn on the blacklight
-  lcd.print("Hello, This is Temerature Sensor!");
+  lcd.print("Hello, This is ");
+  lcd.setCursor(0, 1);
+  lcd.print("AntiCoV");
   delay(1000);
   lcd.clear();
   lcd.print("Please Wait...");
@@ -173,12 +178,12 @@ void setup() {
   
   for (int i = 9; i > 0 ; i--) {
     lcd.print(i);
-    delay(500);
+    delay(200);
   }
   
   lcd.clear();
   lcd.setCursor(0, 0);
-  lcd.print("Temperture = ");
+  lcd.print("Connecting");
   pinMode(BUTTON, INPUT);
   pinMode(SOUND, OUTPUT);
 
@@ -196,6 +201,8 @@ void setup() {
   // }
 
   Serial.println("Finish initialization");
+  lcd.clear();
+  lcd.print("Temperature = ");
 }
 
 void loop() {
