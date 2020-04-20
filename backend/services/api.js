@@ -12,6 +12,7 @@ module.exports = {
 		let records = await Record.find({}).exec()
 		let one = 0, two = 0, three = 0, four = 0, five = 0, six = 0, seven = 0
 		records.map(r => {
+			console.log(r.temperatue)
 			if (r.temperatue < 34) one++
 			else if (r.temperatue < 35) two++
 			else if (r.temperatue < 36) three++
