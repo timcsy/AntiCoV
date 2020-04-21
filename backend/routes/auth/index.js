@@ -156,7 +156,7 @@ router.get('/connect/signup', async (ctx) => {
 router.get('/member', async (ctx) => {
 	if (ctx.isAuthenticated()) {
 		const user = await User.findById(ctx.state.user).populate('identities').exec()
-		await ctx.render('member', {identities: user.identities})
+		await ctx.render('secret_page', {identities: user.identities})
 	} else {
 		ctx.redirect('/')
 	}
