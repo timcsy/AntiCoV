@@ -15,7 +15,8 @@ const url = f('mongodb://%s:%s@%s:%d/%s?authSource=admin', user, password, hostn
 mongoose.connect(url, {
 	authMechanism: authMechanism,
 	useNewUrlParser: true,
-	useCreateIndex: true
+	useCreateIndex: true,
+	useUnifiedTopology: true
 })
 
 module.exports = mongoose

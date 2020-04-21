@@ -23,7 +23,7 @@ router.post('/login', passport.authenticate('local-login', {
 	})
 	// even xhr call it will set cookie (axios can set cookie, but not redirect)
 	ctx.cookies.set('jwt_token', token, {signed: true, httpOnly: true})
-	ctx.redirect('/member') // successRedirect
+	ctx.status = 200 // success
 })
 
 // signup
@@ -36,7 +36,7 @@ router.post('/signup', passport.authenticate('local-signup', {
 	})
 	// even xhr call it will set cookie (axios can set cookie, but not redirect)
 	ctx.cookies.set('jwt_token', token, {signed: true, httpOnly: true})
-	ctx.redirect('/member') // successRedirect
+	ctx.status = 200 // success
 })
 
 
@@ -156,7 +156,7 @@ router.get('/connect/signup', async (ctx) => {
 router.get('/member', async (ctx) => {
 	if (ctx.isAuthenticated()) {
 		const user = await User.findById(ctx.state.user).populate('identities').exec()
-		await ctx.render('member', {identities: user.identities})
+		await ctx.render('secret_page', {identities: user.identities})
 	} else {
 		ctx.redirect('/')
 	}

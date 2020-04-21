@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <title>體溫門禁系統</title>
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+
     <style type="text/css">
         @media(min-width: 100px) {
             .hide {
@@ -88,6 +88,7 @@
             window.open('https://sites.google.com/gs.ncku.edu.tw/temperature-measurement/' + src, 'temperature');   //跳转
             window.close();
         }
+
     </script>
 </head>
 <body style="background-color : #000000;font-family:'Microsoft YaHei UI'" onload=" ">
@@ -131,6 +132,8 @@
             //test data
             var set = [30, 31, 32, 33, 34, 35, 36, 37];
             //var data = [12, 23, 44, 55, 33, 21, 1];
+
+
             var canvas = document.getElementById('canvas');
             var ctx = canvas.getContext('2d');
             var width = canvas.width;
@@ -175,9 +178,7 @@
             //發燒線
             ctx.beginPath();
             ctx.strokeStyle = "red";
-            ctx.moveTo(padding * 0.5, height - padding * 0.5 - avg);
-            ctx.fillText("平均線", width - padding * 0.5, height - padding * 0.5 - avg - 7);
-            ctx.lineTo(width - padding * 0.5, height - padding * 0.5 - avg);
+
             ctx.stroke();
         }
         function critical_information(fever_n, total_n, average_n) {
@@ -187,44 +188,5 @@
             document.getElementById("criticalList").innerHTML = "<li>" + fever + "</li>" + "<li>" + total + "</li>" + "<li>" + average + "</li>";
         }
 
-        $(document).ready(function () {
-            function do_thing() {
-                var data = [0, 0, 0, 0, 0, 0, 0];
-                var fever = -1;
-                var total = -1;
-                var avg = -1;
-                $.ajax({
-                    url: "https://anticov.tew.tw/api/v1/statistics",
-                    type: "GET",
-                    dataType: "json",
-                    timeout: 5000,
-                    success: function (jdata) {
-                        fever = jdata.fever;
-                        total = jdata.total;
-                        avg = jdata.avg_temp;
-                        critical_information(fever, total, avg);
-                    },
-                    error: function () {
-                        critical_information(fever, total, avg);
-                    }
-                });
-                $.ajax({
-                    url: "https://anticov.tew.tw/api/v1/temperature",
-                    type: "GET",
-                    dataType: "json",
-                    timeout: 5000,
-                    success: function (jdata) {
-                        data = [jdata.one, jdata.two, jdata.three, jdata.four, jdata.five, jdata.six, jdata.seven];
-                        draw(data, avg);
-                    },
-                    error: function () {
-                        avg = 0;
-                        draw(data, avg);
-                    }
-                });
-            }
-            setInterval(do_thing, 5000); //每個五秒呼叫一次函式
-        });
-    </script>
 </body>
 </html>
