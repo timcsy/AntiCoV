@@ -1,7 +1,7 @@
 import requests
 import websocket
 import json
-import app
+import os
 
 
 def on_message(ws, message):
@@ -37,13 +37,15 @@ if __name__ == "__main__":
     ws.on_open = on_open
     msg = ws.on_message
     print(msg)
+    ws.run_forever(ping_timeout=30)
+    if msg != None:
+        os.system("python3 LineBotPushMessage.py \"" + msg + "\"")
     '''if msg['alarm'] == "bad":
-        app.location_send_message("118", "1")
-        app.broadcast_message("有人沒量體溫呢~~")
-        app.broadcast_message(msg)
+        app.location.send_message("118", "1")
+        os.system("python3 LineBotPushMessage.py \"有人沒量體溫呢~~\"")
+        os.system("python3 LineBotPushMessage.py \"" + msg + "\"")
     elif msg['alarm'] == "fever":
         app.location.send_message("3", "1")
-        app.broadcast_message("哇...發燒了!!")
-        app.broadcast_message(msg)'''
-    ws.run_forever(ping_timeout=30)
-    print("Running ...")
+        os.system("python3 LineBotPushMessage.py \"哇...發燒了!!\"")
+        os.system("python3 LineBotPushMessage.py \"" + msg + "\"")'''
+    print("==========Web Socket Terminating==========")
