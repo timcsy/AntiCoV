@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <title>體溫門禁系統</title>
+
     <style type="text/css">
         @media(min-width: 100px) {
             .hide {
@@ -87,28 +88,52 @@
             window.open('https://sites.google.com/gs.ncku.edu.tw/temperature-measurement/' + src, 'temperature');   //跳转
             window.close();
         }
-        function callapi() {
-            if (request.status >= 200 && request.status < 400) {
-                var input = request.responseText;
-                alert(input[2])
-            } else {
-                alert('err status');
-            }
-        }
-        const request = new XMLHttpRequest();
-        request.onload = function () {
-            callapi();
-        }
-        request.onerror = function () {
-            alert('invalid');
-        }
-        //request.open('GET', 'https://reqres.in/api/users ', true)
-        //request.send();
 
-        function draw(data) {
+    </script>
+</head>
+<body style="background-color : #000000;font-family:'Microsoft YaHei UI'" onload=" ">
+    <div class="hide">
+        <div class="header_out">
+            <div class="header_in" onmousedown="jumpToOther('')">
+                <b class="white">temperature</b> <b class="orange">&nbsp;measurement&nbsp;</b>
+            </div>
+        </div>
+        <div class="header_out">
+            <div class="header_in" style="font-size:0">
+                <input id="diagram" onmouseover="mouseOver(this.id)" onmouseout="mouseOut(this.id)" onmousedown="jumpToOther('/首頁/'+this.id)" class="buttun" type="button" value="Diagram" style="border-bottom:2px #ffa700 solid" />
+                <input id="table" onmouseover="mouseOver(this.id)" onmouseout="mouseOut(this.id)" onmousedown="jumpToOther('/首頁/'+this.id)" class="buttun" type="button" value="Table" />
+                <input id="sign-up" onmouseover="mouseOver(this.id)" onmouseout="mouseOut(this.id)" onmousedown="jumpToOther('/首頁/'+this.id)" class="buttun" type="button" value="Sign Up" />
+                <input id="control" onmouseover="mouseOver(this.id)" onmouseout="mouseOut(this.id)" onmousedown="jumpToOther('/首頁/'+this.id)" class="buttun" type="button" value="Control" />
+                <input id="about" onmouseover="mouseOver(this.id)" onmouseout="mouseOut(this.id)" onmousedown="jumpToOther('/首頁/'+this.id)" class="buttun" type="button" value="About" />
+            </div>
+        </div>
+    </div>
+    <div class="marge">
+        <div class="header_out" style="margin-top:150px; width:750px">
+            <div style="float:left" class="header_in">
+                <canvas id="canvas" width="500" height="400"></canvas>
+            </div>
+            <div style="float:left;color:white; margin-left:500px; font-size:x-large; margin-top:-100px; font-weight:300; font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif">
+                &nbsp;&nbsp;&nbsp;<span class="document">critical number</span>
+                <ul id="criticalList" class="document">
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        function clearCanvas()
+{  
+    var c=document.getElementById("canvas");  
+    var cxt=c.getContext("2d");  
+    c.height=c.height;  
+}  
+        function draw(data, avg) {
+            clearCanvas();
             //test data
             var set = [30, 31, 32, 33, 34, 35, 36, 37];
-            data = [12, 23, 44, 55, 33, 21, 1];
+            //var data = [12, 23, 44, 55, 33, 21, 1];
+
+
             var canvas = document.getElementById('canvas');
             var ctx = canvas.getContext('2d');
             var width = canvas.width;
@@ -153,9 +178,7 @@
             //發燒線
             ctx.beginPath();
             ctx.strokeStyle = "red";
-            ctx.moveTo(padding * 0.5, height - padding * 0.5 - 38);
-            ctx.fillText("發燒線", width - padding * 0.5, height - padding * 0.5 - 45);
-            ctx.lineTo(width - padding * 0.5, height - padding * 0.5 - 38);
+
             ctx.stroke();
         }
         function critical_information(fever_n, total_n, average_n) {
@@ -164,36 +187,6 @@
             var average = "average T℃:&nbsp;" + average_n;
             document.getElementById("criticalList").innerHTML = "<li>" + fever + "</li>" + "<li>" + total + "</li>" + "<li>" + average + "</li>";
         }
-    </script>
-</head>
-<body style="background-color : #000000;font-family:'Microsoft YaHei UI'" onload="draw(); critical_information(100, 1000, 38.6);">
-    <div class="hide">
-        <div class="header_out">
-            <div class="header_in" onmousedown="jumpToOther('')">
-                <b class="white">temperature</b> <b class="orange">&nbsp;measurement&nbsp;</b>
-            </div>
-        </div>
-        <div class="header_out">
-            <div class="header_in" style="font-size:0">
-                <input id="diagram" onmouseover="mouseOver(this.id)" onmouseout="mouseOut(this.id)" onmousedown="jumpToOther('/首頁/'+this.id)" class="buttun" type="button" value="Diagram" style="border-bottom:2px #ffa700 solid" />
-                <input id="table" onmouseover="mouseOver(this.id)" onmouseout="mouseOut(this.id)" onmousedown="jumpToOther('/首頁/'+this.id)" class="buttun" type="button" value="Table" />
-                <input id="sign-up" onmouseover="mouseOver(this.id)" onmouseout="mouseOut(this.id)" onmousedown="jumpToOther('/首頁/'+this.id)" class="buttun" type="button" value="Sign Up" />
-                <input id="control" onmouseover="mouseOver(this.id)" onmouseout="mouseOut(this.id)" onmousedown="jumpToOther('/首頁/'+this.id)" class="buttun" type="button" value="Control" />
-                <input id="about" onmouseover="mouseOver(this.id)" onmouseout="mouseOut(this.id)" onmousedown="jumpToOther('/首頁/'+this.id)" class="buttun" type="button" value="About" />
-            </div>
-        </div>
-    </div>
-    <div class="marge">
-        <div class="header_out" style="margin-top:150px; width:750px">
-            <div style="float:left" class="header_in">
-                <canvas id="canvas" width="500" height="400"></canvas>
-            </div>
-            <div style="float:left;color:white; margin-left:500px; font-size:x-large; margin-top:-100px; font-weight:300; font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif">
-                &nbsp;&nbsp;&nbsp;<span class="document">critical number</span>
-                <ul id="criticalList" class="document">
-                </ul>
-            </div>
-        </div>
-    </div>
+
 </body>
 </html>

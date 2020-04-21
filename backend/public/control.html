@@ -120,11 +120,6 @@
         }
     </style>
     <script>
-        function compile(code) {
-            if (code < 2)
-                return 7 * code;
-            return code + compile(code / 2);
-        }
         function mouseOver(id) {
             document.getElementById(id).style.color = '#000000';
             document.getElementById(id).style.background = '#ffa700';
@@ -136,17 +131,6 @@
         function jumpToOther(src) {
             window.open('https://sites.google.com/gs.ncku.edu.tw/temperature-measurement/' + src, 'temperature');   //跳转
             window.close();
-        }
-        function show_control(id) {
-            var code = compile(document.getElementById('secret').value);
-            //var code = document.getElementById('secret').value;
-            if (code === '12341240.025390625')
-                document.getElementById(id).style.visibility = 'visible';
-            else
-                alert("密碼錯誤, 請重新輸入 謝謝!");
-        }
-        function requestapi() {
-
         }
     </script>
 </head>
@@ -170,18 +154,6 @@
     <div class="margin">
         <div class="header_out" style="font-family:'Microsoft YaHei UI'; ">
             <div class="header_in">
-                <span style="color:white">遠端控制server</span>
-                <p style="color:white; " class="downword">工程師專區:<input id="secret" type="password" placeholder="請填入工程師密碼" required="required" class="password" /><input id="Button_in" type="button" onmouseover="mouseOver(this.id)" onmouseout="mouseOut(this.id)" onmousedown="show_control('block')" class="buttun" value="confirm" style="margin-left:5px" /></p>
-                <div id="block" style="font-size:x-large;font-family:'Microsoft YaHei UI';color:white;visibility:hidden">
-                    <input id="Button1" type="button" onmouseover="mouseOver(this.id)" onmouseout="mouseOut(this.id)" onmousedown="requestapi()" class="buttun" value="使用" style="font-family:'Microsoft YaHei UI';" /><span class="downword">關閉遠端server</span>
-                    <br />
-                    <input id="Button2" type="button" onmouseover="mouseOver(this.id)" onmouseout="mouseOut(this.id)" onmousedown="requestapi()" class="buttun" value="使用" style="font-family:'Microsoft YaHei UI';" /><span class="downword">開啟遠端server</span>
-                    <br />
-                    <input id="Button3" type="button" onmouseover="mouseOver(this.id)" onmouseout="mouseOut(this.id)" onmousedown="requestapi()" class="buttun" value="使用" style="font-family:'Microsoft YaHei UI';" /><span class="downword">自行編寫api</span>
-                    <input id="selfapi" type="text" class="downword" />
-                </div>
-            </div>
-        </div>
-    </div>
+
 </body>
 </html>
