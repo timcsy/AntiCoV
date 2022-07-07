@@ -21,7 +21,7 @@
     "koa-session": "^5.8.2",
     "koa-views": "^6.1.4",
     "minimatch": "^3.0.4",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "mongoose": "^5.2.6",
     "passport-facebook": "^2.1.1",
     "passport-facebook-token": "^3.3.0",
